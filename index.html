@@ -32,16 +32,15 @@
       width: 100%;
       height: auto;
       max-height: 360px;
-      /* Ensures the top banner fits horizontally without ANY cropping */
       object-fit: contain; 
       display: block;
     }
 
     .layout {
       display: grid;
-      /* Caps the sides at 557px and 566px, but lets them shrink fluidly so they aren't huge */
-      grid-template-columns: minmax(100px, 557px) minmax(320px, 1fr) minmax(100px, 566px);
-      gap: 16px;
+      /* Automatically sizes the side columns to match the scaled-down images */
+      grid-template-columns: auto 1fr auto;
+      gap: 24px;
       padding: 16px;
       box-sizing: border-box;
       align-items: start;
@@ -49,14 +48,15 @@
 
     .side-image {
       background: #fff;
-      display: flex;
-      justify-content: center;
     }
 
     .side-image img {
+      /* Restricts the giant height to a reasonable percentage of the screen */
+      max-height: 70vh; 
+      /* Scales the width down proportionally so it doesn't look stretched or huge */
+      width: auto; 
       max-width: 100%;
-      height: auto;
-      /* Guarantees the entire image is shown without resizing distortion */
+      /* Guarantees the entire image remains visible with zero cropping */
       object-fit: contain; 
       display: block;
     }
@@ -219,6 +219,10 @@
     @media (max-width: 860px) {
       .layout {
         grid-template-columns: 1fr;
+      }
+      .side-image img {
+        max-height: 300px;
+        margin: 0 auto;
       }
     }
   </style>
