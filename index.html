@@ -18,47 +18,46 @@
       display: grid;
       grid-template-rows: auto 1fr;
       min-height: 100vh;
-      /* Ensures the fixed images never get cut off on small screens */
-      overflow-x: auto; 
+      overflow-x: hidden;
     }
 
     .banner {
       width: 100%;
       background: #fff;
-      display: block;
+      display: flex;
+      justify-content: center;
     }
 
     .banner img {
       width: 100%;
       height: auto;
-      aspect-ratio: 2876 / 360;
-      /* Scales exactly to window horizontally without cropping */
+      max-height: 360px;
+      /* Ensures the top banner fits horizontally without ANY cropping */
       object-fit: contain; 
       display: block;
     }
 
     .layout {
       display: grid;
-      /* Locks left to 557px, right to 566px, fluid center */
-      grid-template-columns: 557px minmax(400px, 1fr) 566px;
+      /* Caps the sides at 557px and 566px, but lets them shrink fluidly so they aren't huge */
+      grid-template-columns: minmax(100px, 557px) minmax(320px, 1fr) minmax(100px, 566px);
+      gap: 16px;
+      padding: 16px;
+      box-sizing: border-box;
       align-items: start;
     }
 
     .side-image {
       background: #fff;
+      display: flex;
+      justify-content: center;
     }
 
-    /* Targets the Left Image */
-    .layout > aside:first-of-type img {
-      width: 557px;
-      height: 1372px;
-      display: block;
-    }
-
-    /* Targets the Right Image */
-    .layout > aside:last-of-type img {
-      width: 566px;
-      height: 1167px;
+    .side-image img {
+      max-width: 100%;
+      height: auto;
+      /* Guarantees the entire image is shown without resizing distortion */
+      object-fit: contain; 
       display: block;
     }
 
@@ -215,6 +214,12 @@
     .bottom-info #timerText,
     .bottom-info #mistakesText {
       color: #000;
+    }
+
+    @media (max-width: 860px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
