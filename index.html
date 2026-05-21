@@ -21,19 +21,7 @@
 
     .banner {
       width: 100%;
-      background: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 0;
-      box-shadow: none;
-    }
-
-    .banner img {
-      width: 100%;
       height: auto;
-      min-height: 100px;
-      object-fit: contain;
       display: block;
     }
 
@@ -46,19 +34,17 @@
       align-items: start;
     }
 
-    .side-image {
-      width: 400px;
-      height: 800px;
-      background: #fff;
-      overflow: hidden;
-      box-shadow: none;
+    .side-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      width: 100%;
     }
-
-    .side-image img {
-      width: 400px;
-      height: 800px;
+    
+    .left-image,
+    .right-image {
       display: block;
-      object-fit: cover;
+      object-fit: contain;
     }
 
     .center {
