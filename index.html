@@ -363,7 +363,11 @@
     }
 
     function buildBoard() {
+      // 1. Clear previous grid styles so they don't force the container to stay stretched
+      boardEl.style.gridTemplateColumns = '';
+      boardEl.style.gridTemplateRows = '';
       boardEl.innerHTML = '';
+      
       // Get the actual available space in the center section
       const centerEl = document.getElementById('gameArea');
       const controlsEl = document.querySelector('.controls');
@@ -379,15 +383,15 @@
       const availableWidth = centerEl.clientWidth - 40; // left and right padding
       
       // Calculate cell size based on available space
-      // Calculate cell size based on available space
       const maxCellHeight = Math.max(8, Math.floor(availableHeight / size));
       const maxCellWidth = Math.max(8, Math.floor(availableWidth / size));
-
-      // Capping it at 32px ensures it stays small, but still shrinks if the grid size is huge
+      
+      // Locks the cell size to a max of 32px, but scales down for massive grids
       const cellSize = Math.min(maxCellHeight, maxCellWidth, 32);
       
       boardEl.style.gridTemplateColumns = `repeat(${size}, ${cellSize}px)`;
       boardEl.style.gridTemplateRows = `repeat(${size}, ${cellSize}px)`;
+      
       for (let r = 0; r < size; r++) {
         for (let c = 0; c < size; c++) {
           const button = document.createElement('button');
@@ -402,26 +406,6 @@
             handleRightClick(e, r, c);
           });
           boardEl.appendChild(button);
-        }
-      }
-    }
-
-    function computeNeighborCounts() {
-      for (let r = 0; r < size; r++) {
-        for (let c = 0; c < size; c++) {
-          if (grid[r][c].mine) continue;
-          let count = 0;
-          for (let dr = -1; dr <= 1; dr++) {
-            for (let dc = -1; dc <= 1; dc++) {
-              if (dr === 0 && dc === 0) continue;
-              const nr = r + dr;
-              const nc = c + dc;
-              if (nr >= 0 && nr < size && nc >= 0 && nc < size && grid[nr][nc].mine) {
-                count += 1;
-              }
-            }
-          }
-          grid[r][c].count = count;
         }
       }
     }
