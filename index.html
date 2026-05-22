@@ -363,35 +363,41 @@
     }
 
     function buildBoard() {
-      // 1. Clear previous grid styles so they don't force the container to stay stretched
+      // 1. Find the correct center element using its class
+      const centerEl = document.querySelector('.center');
+      if (!centerEl) return; // Safety check if element isn't found yet
+      
+      const controlsEl = document.querySelector('.controls');
+      const noticeEl = document.querySelector('.notice');
+      const bannerEl = document.querySelector('.banner');
+      
+      // 2. Measure stable elements so the calculation never gets caught in a loop
+      const bannerHeight = bannerEl ? bannerEl.offsetHeight : 0;
+      const controlsHeight = controlsEl ? controlsEl.offsetHeight : 50;
+      const noticeHeight = noticeEl ? noticeEl.offsetHeight : 30;
+      
+      // Calculate available vertical space using the screen height as a stable base
+      const availableHeight = window.innerHeight - bannerHeight - controlsHeight - noticeHeight - 80; 
+      const availableWidth = centerEl.clientWidth - 40; 
+      
+      // 3. Clear out the old grid properties and elements safely
       boardEl.style.gridTemplateColumns = '';
       boardEl.style.gridTemplateRows = '';
       boardEl.innerHTML = '';
       
-      // Get the actual available space in the center section
-      const centerEl = document.getElementById('gameArea');
-      const controlsEl = document.querySelector('.controls');
-      const noticeEl = document.querySelector('.notice');
-      
-      // Calculate available space for the board
-      const centerHeight = centerEl.clientHeight;
-      const controlsHeight = controlsEl ? controlsEl.offsetHeight : 50;
-      const noticeHeight = noticeEl ? noticeEl.offsetHeight : 30;
-      const centerPadding = 40; // top and bottom padding
-      
-      const availableHeight = centerHeight - controlsHeight - noticeHeight - centerPadding;
-      const availableWidth = centerEl.clientWidth - 40; // left and right padding
-      
-      // Calculate cell size based on available space
+      // 4. Calculate cell size based on available space
       const maxCellHeight = Math.max(8, Math.floor(availableHeight / size));
       const maxCellWidth = Math.max(8, Math.floor(availableWidth / size));
       
-      // Locks the cell size to a max of 32px, but scales down for massive grids
+      // Locks the cells to a max of 32px so small boards stay neat, 
+      // but shrinks them seamlessly for massive grids
       const cellSize = Math.min(maxCellHeight, maxCellWidth, 32);
       
+      // 5. Apply the fixed dimensions
       boardEl.style.gridTemplateColumns = `repeat(${size}, ${cellSize}px)`;
       boardEl.style.gridTemplateRows = `repeat(${size}, ${cellSize}px)`;
       
+      // 6. Regenerate the cells
       for (let r = 0; r < size; r++) {
         for (let c = 0; c < size; c++) {
           const button = document.createElement('button');
