@@ -379,9 +379,12 @@
       const availableWidth = centerEl.clientWidth - 40; // left and right padding
       
       // Calculate cell size based on available space
+      // Calculate cell size based on available space
       const maxCellHeight = Math.max(8, Math.floor(availableHeight / size));
       const maxCellWidth = Math.max(8, Math.floor(availableWidth / size));
-      const cellSize = Math.min(maxCellHeight, maxCellWidth);
+
+      // Capping it at 32px ensures it stays small, but still shrinks if the grid size is huge
+      const cellSize = Math.min(maxCellHeight, maxCellWidth, 32);
       
       boardEl.style.gridTemplateColumns = `repeat(${size}, ${cellSize}px)`;
       boardEl.style.gridTemplateRows = `repeat(${size}, ${cellSize}px)`;
